@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TicTacToe</string>
+    <string name="buttonRestart">Restart</string>
+    <string name="titleWelcome">Welcome in TicTacToe!</string>
+    <string name="action_clear">Clear</string>
+    <string name="text_too_many_circles">You have more than 5 circles</string>
 </resources>
