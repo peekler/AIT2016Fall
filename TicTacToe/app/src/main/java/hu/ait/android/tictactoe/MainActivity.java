@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
+
 import hu.ait.android.tictactoe.view.TicTacToeView;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
                 gameView.restartGame();
             }
         });
+
+        ShimmerFrameLayout shimmerFrameLayout = (ShimmerFrameLayout) findViewById(
+                R.id.shimmer_view_container);
+        shimmerFrameLayout.startShimmerAnimation();
     }
 
 
@@ -48,5 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 }).show();
     }
 
+    public void showSimpleSnackbarMessage(String message) {
+        Snackbar.make(layoutContent, message, Snackbar.LENGTH_LONG).show();
+    }
 
 }

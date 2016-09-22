@@ -25,6 +25,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="Touch the game area to play"/>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <Button
             android:id="@+id/btnRestart"
             android:layout_width="wrap_content"

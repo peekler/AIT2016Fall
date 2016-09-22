@@ -1,29 +1,32 @@
 package hu.ait.android.tictactoe.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import hu.ait.android.tictactoe.MainActivity;
+import hu.ait.android.tictactoe.R;
+import hu.ait.android.tictactoe.model.TicTacToeModel;
 
 public class TicTacToeView extends View {
 
     private Paint paintBg;
     private Paint paintLine;
+    private Paint paintText;
 
-    private List<PointF> circlesList = new ArrayList<>();
+    private Bitmap backGround;
 
     public TicTacToeView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        backGround = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.grass);
 
         paintBg = new Paint();
         paintBg.setColor(Color.BLACK);
@@ -33,18 +36,61 @@ public class TicTacToeView extends View {
         paintLine.setColor(Color.WHITE);
         paintLine.setStyle(Paint.Style.STROKE);
         paintLine.setStrokeWidth(5);
+
+        paintText = new Paint();
+        paintText.setColor(Color.RED);
+        paintText.setTextSize(80);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        backGround = Bitmap.createScaledBitmap(backGround, getWidth(), getHeight(), false);
+
+        //paintText.getTextBounds("HELLO",...);
+        paintText.setTextSize(getWidth()/2);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawRect(0, 0, getWidth(), getHeight(), paintBg);
+        //canvas.drawRect(0, 0, getWidth(), getHeight(), paintBg);
+
+        canvas.drawBitmap(backGround, 0, 0, null);
+
+        canvas.drawText("HELLO AIT", 20, 200, paintText);
 
         drawGameField(canvas);
 
-        drawCircles(canvas);
+        drawPlayers(canvas);
+    }
 
+    private void drawPlayers(Canvas canvas) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (TicTacToeModel.getInstance().getFieldContent(i,j) == TicTacToeModel.CIRCLE) {
+
+                    // draw a circle at the center of the field
+
+                    // X coordinate: left side of the square + half width of the square
+                    float centerX = i * getWidth() / 3 + getWidth() / 6;
+                    float centerY = j * getHeight() / 3 + getHeight() / 6;
+                    int radius = getHeight() / 6 - 2;
+
+                    canvas.drawCircle(centerX, centerY, radius, paintLine);
+
+                } else if (TicTacToeModel.getInstance().getFieldContent(i,j) == TicTacToeModel.CROSS) {
+                    canvas.drawLine(i * getWidth() / 3, j * getHeight() / 3,
+                            (i + 1) * getWidth() / 3,
+                            (j + 1) * getHeight() / 3, paintLine);
+
+                    canvas.drawLine((i + 1) * getWidth() / 3, j * getHeight() / 3,
+                            i * getWidth() / 3, (j + 1) * getHeight() / 3, paintLine);
+                }
+            }
+        }
     }
 
     private void drawGameField(Canvas canvas) {
@@ -63,27 +109,25 @@ public class TicTacToeView extends View {
                 paintLine);
     }
 
-    private void drawCircles(Canvas canvas) {
-        for (PointF circleMid : circlesList) {
-            canvas.drawCircle(circleMid.x, circleMid.y,100, paintLine);
-        }
-    }
-
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             Log.d("TAG_DRAW", "x: " + event.getX() + " # y: " + event.getY());
-            circlesList.add(new PointF(event.getX(),
-                    event.getY()));
 
-            // redraw this view
-            invalidate();
+            int tX = ((int) event.getX()) / (getWidth() / 3);
+            int tY = ((int) event.getY()) / (getHeight() / 3);
 
-            if (circlesList.size() > 5) {
-                ((MainActivity)getContext()).showTooManyCirclesMessage();
+            if (tX<3 && tY<3 && TicTacToeModel.getInstance().
+                        getFieldContent(tX,tY) == TicTacToeModel.EMPTY) {
+
+                TicTacToeModel.getInstance().setFieldContet(tX,
+                        tY, TicTacToeModel.getInstance().getNextPlayer());
+                TicTacToeModel.getInstance().changeNextPlayer();
+
+                showNextPlayerMessage();
+
+                invalidate();
             }
-
         }
 
         return true;
@@ -99,8 +143,17 @@ public class TicTacToeView extends View {
     }
 
     public void restartGame() {
-        circlesList.clear();
+        TicTacToeModel.getInstance().resetModel();
         invalidate();
+    }
+
+    private void showNextPlayerMessage() {
+        String next = (TicTacToeModel.getInstance().getNextPlayer() ==
+          TicTacToeModel.CIRCLE) ? "O" : "X";
+
+        ((MainActivity)getContext()).showSimpleSnackbarMessage(
+                getContext().getString(R.string.text_next_player, next)
+        );
     }
 
 }
