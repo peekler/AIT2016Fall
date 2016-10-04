@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -16,12 +17,16 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout layoutContent;
     private TicTacToeView gameView;
 
+    private Switch switchFlagMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         layoutContent = (LinearLayout) findViewById(R.id.layoutContent);
+
+        switchFlagMode = (Switch) findViewById(R.id.switchFlagMode);
 
         gameView =
                 (TicTacToeView) findViewById(R.id.gameView);
@@ -56,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void showSimpleSnackbarMessage(String message) {
         Snackbar.make(layoutContent, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    public boolean isFlagMode() {
+        return switchFlagMode.isChecked();
     }
 
 }

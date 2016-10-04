@@ -112,6 +112,9 @@ public class TicTacToeView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
+            boolean isFlagMode = ((MainActivity)getContext()).isFlagMode();
+
             Log.d("TAG_DRAW", "x: " + event.getX() + " # y: " + event.getY());
 
             int tX = ((int) event.getX()) / (getWidth() / 3);

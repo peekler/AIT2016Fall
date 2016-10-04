@@ -7,11 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import hu.ait.android.multiactivitydemo.data.PersonalData;
+import hu.ait.android.multiactivitydemo.perferences.DataManager;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String KEY_NAME = "KEY_NAME";
     public static final String KEY_SIZE = "KEY_SIZE";
+    public static final String KEY_PERSDATA = "KEY_PERSDATA";
     private EditText etName;
+
+    //private PersonalData personalData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         etName = (EditText) findViewById(R.id.etName);
+
+        DataManager.getInstance().setPersonalData((new PersonalData("213213","311111",1984)));
 
         Button btnEasy = (Button) findViewById(R.id.btnEasy);
         btnEasy.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +60,17 @@ public class MainActivity extends AppCompatActivity {
         intentStartGame.putExtra(KEY_NAME, etName.getText().toString());
         intentStartGame.putExtra(KEY_SIZE, size);
 
-        startActivity(intentStartGame);
+        //intentStartGame.putExtra(KEY_PERSDATA, personalData);
+
+        //intentStartGame.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        startActivityForResult(intentStartGame, 101);
+
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
