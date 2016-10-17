@@ -13,7 +13,9 @@ import java.util.List;
 import hu.aut.bme.android.aittodo.R;
 import hu.aut.bme.android.aittodo.data.Todo;
 
-public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder> {
+public class TodoRecyclerAdapter extends
+        RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>
+        implements TodoTouchHelperAdapter {
 
     private List<Todo> todoList;
 
@@ -42,6 +44,33 @@ public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoRecyclerAdapte
         return todoList.size();
     }
 
+    @Override
+    public void onItemDismiss(int position) {
+        todoList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        /*if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(todoList, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(todoList, i, i - 1);
+            }
+        }*/
+
+        //Collections.
+
+        todoList.add(toPosition, todoList.get(fromPosition));
+        todoList.remove(fromPosition);
+
+
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         private CheckBox cbDone;
@@ -52,5 +81,13 @@ public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoRecyclerAdapte
             cbDone = (CheckBox) itemView.findViewById(R.id.cbDone);
             tvTodo = (TextView) itemView.findViewById(R.id.tvTodo);
         }
+    }
+
+    public void addTodo(Todo todo) {
+        todoList.add(0, todo);
+        // refresh the whole list
+        //notifyDataSetChanged();
+        // refresh only one position
+        notifyItemInserted(0);
     }
 }

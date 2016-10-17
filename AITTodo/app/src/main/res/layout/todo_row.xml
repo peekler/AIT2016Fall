@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:padding="5dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="#00ff00">
 
     <CheckBox
         android:id="@+id/cbDone"
