@@ -1,9 +1,15 @@
 package hu.aut.bme.android.aittodo.data;
 
-public class Todo {
+import com.orm.SugarRecord;
+
+public class Todo extends SugarRecord{
 
     private String todoTitle;
     private boolean done;
+
+    public Todo(){
+
+    }
 
     public Todo(String todoTitle, boolean done) {
         this.todoTitle = todoTitle;

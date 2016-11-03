@@ -20,10 +20,14 @@ public class TodoRecyclerAdapter extends
     private List<Todo> todoList;
 
     public TodoRecyclerAdapter() {
-        todoList = new ArrayList<Todo>();
+
+        todoList = Todo.listAll(Todo.class);
+
+        /*todoList = new ArrayList<Todo>();
         for (int i = 0; i < 20; i++) {
             todoList.add(new Todo("Todo"+i,false));
-        }
+        }*/
+
     }
 
     @Override
@@ -46,6 +50,8 @@ public class TodoRecyclerAdapter extends
 
     @Override
     public void onItemDismiss(int position) {
+        todoList.get(position).delete();
+
         todoList.remove(position);
         notifyItemRemoved(position);
     }
@@ -84,6 +90,7 @@ public class TodoRecyclerAdapter extends
     }
 
     public void addTodo(Todo todo) {
+        todo.save();
         todoList.add(0, todo);
         // refresh the whole list
         //notifyDataSetChanged();
