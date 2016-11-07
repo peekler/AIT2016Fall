@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header
+        android:fragment=
+            "demo.android.app.hu.prefframeworkdemo.MySettings$FragmentSettingsBasic"
+        android:icon="@drawable/ic_launcher"
+        android:title="Main settings"
+        android:summary="details"/>
+
+    <header
+        android:fragment=
+            "demo.android.app.hu.prefframeworkdemo.MySettings$FragmentSettingsBasic"
+        android:icon="@drawable/ic_launcher"
+        android:title="Others settings"
+        android:summary="other details"/>
+
+    <header
+        android:fragment=
+            "demo.android.app.hu.prefframeworkdemo.MySettings$FragmentSettingsBasic"
+        android:icon="@drawable/ic_launcher"
+        android:title="More settings"
+        android:summary="more details"/>
+
+</preference-headers>

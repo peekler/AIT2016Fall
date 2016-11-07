@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Main category">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key_autologin"
+            android:title="Auto login"/>
+
+        <SwitchPreference
+            android:title="Enable service"
+            android:key="key_enable_service"
+            android:summaryOff="off"
+            android:summaryOn="on"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Secondary category">
+
+        <EditTextPreference
+            android:key="key_username"
+            android:title="Username"
+            android:summary="Username goes here"
+            android:dialogTitle="Enter username here" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_like_cat"
+            android:title="Do you like cats?"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

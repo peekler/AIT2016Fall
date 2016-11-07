@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.aut.bme.android.aittodo.EditInterface;
 import hu.aut.bme.android.aittodo.R;
 import hu.aut.bme.android.aittodo.data.Todo;
 
@@ -18,8 +19,10 @@ public class TodoRecyclerAdapter extends
         implements TodoTouchHelperAdapter {
 
     private List<Todo> todoList;
+    private EditInterface editInterface;
 
-    public TodoRecyclerAdapter() {
+    public TodoRecyclerAdapter(EditInterface editInterface) {
+        this.editInterface = editInterface;
 
         todoList = Todo.listAll(Todo.class);
 
@@ -38,9 +41,17 @@ public class TodoRecyclerAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.cbDone.setChecked(todoList.get(position).isDone());
         holder.tvTodo.setText(todoList.get(position).getTodoTitle());
+
+        holder.tvTodo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editInterface.showEditDialog(
+                        todoList.get(holder.getAdapterPosition()), holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -92,9 +103,17 @@ public class TodoRecyclerAdapter extends
     public void addTodo(Todo todo) {
         todo.save();
         todoList.add(0, todo);
+
         // refresh the whole list
         //notifyDataSetChanged();
         // refresh only one position
         notifyItemInserted(0);
+    }
+
+    public void edit(Todo todo, int position) {
+
+        todo.save();
+        todoList.set(position, todo);
+        notifyItemChanged(position);
     }
 }
