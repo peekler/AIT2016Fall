@@ -37,7 +37,7 @@ public class AddTodoActivity extends AppCompatActivity {
 
                 Todo newTodo = todoToEdit;
                 if (newTodo == null) {
-                    new Todo(etTodo.getText().toString(),false);
+                    newTodo = new Todo(etTodo.getText().toString(),false);
                 } else {
                     newTodo.setTodoTitle(etTodo.getText().toString());
                 }

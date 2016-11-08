@@ -36,7 +36,7 @@ public class TodoRecyclerAdapter extends
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View todoRow = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.todo_row,null,false);
+                R.layout.todo_row,parent,false);
         return new ViewHolder(todoRow);
     }
 
