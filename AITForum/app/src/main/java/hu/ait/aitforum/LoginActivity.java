@@ -1,5 +1,6 @@
 package hu.ait.aitforum;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hu.ait.aitforum.model.User;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.etEmail)
     EditText etEmail;
@@ -49,15 +50,21 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        showProgressDialog();
+
         firebaseAuth.createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        hideProgressDialog();
 
                         if (task.isSuccessful()) {
                             FirebaseUser fbUser = task.getResult().getUser();
+
                             fbUser.updateProfile(new UserProfileChangeRequest.Builder().
                                     setDisplayName(usernameFromEmail(fbUser.getEmail())).build());
+
+
 
                             User user = new User(fbUser.getEmail(), usernameFromEmail(fbUser.getEmail()));
                             databaseReference.child("users").child(fbUser.getUid()).setValue(user);
@@ -70,6 +77,44 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    @OnClick(R.id.btnLogin)
+    void loginClick() {
+        int num = 6/0;
+
+
+        if (!isFormValid()) {
+            return;
+        }
+
+        showProgressDialog();
+
+        firebaseAuth.signInWithEmailAndPassword(
+                etEmail.getText().toString(),
+                etPassword.getText().toString()
+        ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                hideProgressDialog();
+
+                if (task.isSuccessful()) {
+                    // Open new Activity
+                    startActivity(new Intent(LoginActivity.this,
+                            PostsActivity.class));
+                    finish();
+
+                } else {
+                    Toast.makeText(LoginActivity.this,
+                            task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+
 
     private String usernameFromEmail(String email) {
         if (email.contains("@")) {
