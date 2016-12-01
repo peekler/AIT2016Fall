@@ -26,13 +26,13 @@ public class MessageFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof OnMessageFragmentAnswer) {
-            onMessageFragmentAnswer = (OnMessageFragmentAnswer) context;
-        } else {
+        if (!(getActivity() instanceof OnMessageFragmentAnswer)) {
             throw new RuntimeException(
                     "This Activity is not implementing the " +
-                    "OnMessageFragmentAnswer interface");
+                            "OnMessageFragmentAnswer interface");
         }
+
+        onMessageFragmentAnswer = (OnMessageFragmentAnswer) getActivity();
     }
 
     @NonNull
@@ -47,7 +47,6 @@ public class MessageFragment extends DialogFragment {
         View dialogLayout = inflater.inflate(R.layout.layout_dialog,null);
         final EditText etName = (EditText) dialogLayout.findViewById(R.id.etName);
         alertDialogBuilder.setView(dialogLayout);
-
 
         alertDialogBuilder.setTitle("Please read this message");
         alertDialogBuilder.setMessage(message);
@@ -65,7 +64,6 @@ public class MessageFragment extends DialogFragment {
                 onMessageFragmentAnswer.onNegativeSelected();
             }
         });
-
 
         return alertDialogBuilder.create();
     }
