@@ -3,6 +3,7 @@
     package="hu.ait.locationdemo">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCteFqinIi6bqf4e7nTIAJnO1lkc5qc3B4"/>
+
     </application>
 
 </manifest>
